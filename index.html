@@ -31,17 +31,7 @@
   <link rel="stylesheet" href="styles.css" />
 
   <script>
-    (function lockInitialScrollPosition() {
-      try {
-        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-        if (window.location.hash) {
-          history.replaceState(null, document.title, window.location.pathname + window.location.search);
-        }
-      } catch {
-        // no-op
-      }
-      window.scrollTo(0, 0);
-    })();
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch {}
   </script>
 
   <script>
