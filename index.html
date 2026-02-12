@@ -31,6 +31,20 @@
   <link rel="stylesheet" href="styles.css" />
 
   <script>
+    (function lockInitialScrollPosition() {
+      try {
+        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+        if (window.location.hash) {
+          history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        }
+      } catch {
+        // no-op
+      }
+      window.scrollTo(0, 0);
+    })();
+  </script>
+
+  <script>
     window.LANDING_CONFIG = {
       ga4MeasurementId: "G-XXXXXXXXXX",
     };
@@ -65,7 +79,7 @@
 
       <div class="hero-actions">
         <button class="cta" id="ctaBtn" type="button">اشترك الآن</button>
-        <a class="link" href="#testimonials">شوف آراء الطلاب</a>
+        <a class="link" href="#" data-scroll-target="testimonials">شوف آراء الطلاب</a>
       </div>
 
       <p class="rating">⭐ 4.8/5 — من 200 تقييم</p>

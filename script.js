@@ -1,6 +1,21 @@
 function forcePageTopOnLoad() {
+  const clearHash = () => {
+    if (!window.location.hash) return;
+
+    try {
+      history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    } catch {
+      // no-op
+    }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  const resetView = () => {
+    clearHash();
+    scrollToTop();
   };
 
   try {
@@ -11,10 +26,12 @@ function forcePageTopOnLoad() {
     // no-op
   }
 
-  scrollToTop();
-  requestAnimationFrame(scrollToTop);
+  resetView();
+  requestAnimationFrame(resetView);
+  window.addEventListener("load", resetView, { once: true });
+  setTimeout(resetView, 0);
 
-  window.addEventListener("pageshow", scrollToTop);
+  window.addEventListener("pageshow", resetView);
 }
 
 forcePageTopOnLoad();
@@ -211,6 +228,18 @@ function setLoading(loading) {
 if (ctaBtn) ctaBtn.addEventListener("click", () => openModal(ctaBtn));
 if (ctaBtn2) ctaBtn2.addEventListener("click", () => openModal(ctaBtn2));
 if (closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
+
+const scrollTargetLinks = document.querySelectorAll("[data-scroll-target]");
+scrollTargetLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    const targetId = link.getAttribute("data-scroll-target");
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!target) return;
+
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
 
 modalBackdrop.addEventListener("click", (e) => {
   if (e.target === modalBackdrop) closeModal();
