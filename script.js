@@ -1,3 +1,24 @@
+function forcePageTopOnLoad() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  try {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+  } catch {
+    // no-op
+  }
+
+  scrollToTop();
+  requestAnimationFrame(scrollToTop);
+
+  window.addEventListener("pageshow", scrollToTop);
+}
+
+forcePageTopOnLoad();
+
 const modalBackdrop = document.getElementById("modalBackdrop");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const ctaBtn = document.getElementById("ctaBtn");
